@@ -51,7 +51,7 @@ P="ctf"
 P_ROOT="root"
 
 # Default values
-MODE="dev"
+MODE="prod"
 NOREPOMODE=false
 TYPE="self"
 KEYFILE="none"
