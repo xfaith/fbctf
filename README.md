@@ -1,4 +1,4 @@
-# FBCTF [![Build Status](https://travis-ci.org/facebook/fbctf.svg)](https://travis-ci.org/facebook/fbctf)
+# FBCTF [![Build Status](https://travis-ci.org/rafaelfoster/fbctf.svg)](https://travis-ci.org/rafaelfoster/fbctf)
 
 ## What is FBCTF?
 
@@ -14,15 +14,15 @@ The Facebook CTF is a platform to host Jeopardy and “King of the Hill” style
 * Have participants register as teams
 * Enjoy!
 
-For more information, see the [Admin Guide](https://github.com/facebook/fbctf/wiki/Admin-Guide)
+For more information, see the [Admin Guide](https://github.com/rafaelfoster/fbctf/wiki/Admin-Guide)
 
 # Installation
 
 The FBCTF platform was designed with flexibility in mind, allowing for different types of installations depending on the needs of the end user. The FBCTF platform can be installed either in Development Mode, or Production Mode.
 
-[Quick Setup Guide](https://github.com/facebook/fbctf/wiki/Quick-Setup-Guide) (_Recommended Installation_)
+[Quick Setup Guide](https://github.com/rafaelfoster/fbctf/wiki/Quick-Setup-Guide) (_Recommended Installation_)
 
-The [Quick Setup Guide](https://github.com/facebook/fbctf/wiki/Quick-Setup-Guide) details the quick setup mode which provides a streamlined and consistent build of the platform but offers less flexibility when compared to a custom installation. If you would prefer to perform a custom installation, please see the [Development Installation Guide](https://github.com/facebook/fbctf/wiki/Installation-Guide,-Development) or [Production Installation Guide](https://github.com/facebook/fbctf/wiki/Installation-Guide,-Production).
+The [Quick Setup Guide](https://github.com/rafaelfoster/fbctf/wiki/Quick-Setup-Guide) details the quick setup mode which provides a streamlined and consistent build of the platform but offers less flexibility when compared to a custom installation. If you would prefer to perform a custom installation, please see the [Development Installation Guide](https://github.com/rafaelfoster/fbctf/wiki/Installation-Guide,-Development) or [Production Installation Guide](https://github.com/rafaelfoster/fbctf/wiki/Installation-Guide,-Production).
 
 ## Reporting an Issue
 
@@ -32,7 +32,7 @@ If you have issues installing the platform, please provide the entire output of 
 
 ## Contribute
 
-You’ve used it, now you want to make it better? Awesome! Pull requests are welcome! Click [here](https://github.com/facebook/fbctf/blob/master/CONTRIBUTING.md) to find out how to contribute.
+You’ve used it, now you want to make it better? Awesome! Pull requests are welcome! Click [here](https://github.com/rafaelfoster/fbctf/blob/master/CONTRIBUTING.md) to find out how to contribute.
 
 Facebook also has [bug bounty program](https://www.facebook.com/whitehat/) that includes FBCTF. If you find a security vulnerability in the platform, please submit it via the process outlined on that page and do not file a public issue.
 
@@ -40,8 +40,8 @@ Feel free to join our slack by registering your email here: https://fbctf-slack.
 
 ## Have more questions?
 
-Check out the [wiki pages](https://github.com/facebook/fbctf/wiki) attached to this repo. You can also ask on Slack by registering your email here: https://fbctf-slack.herokuapp.com/.
+Check out the [wiki pages](https://github.com/rafaelfoster/fbctf/wiki) attached to this repo. You can also ask on Slack by registering your email here: https://fbctf-slack.herokuapp.com/.
 
 ## License
 
-This source code is licensed under the Creative Commons Attribution-NonCommercial 4.0 International license. View the license [here](https://github.com/facebook/fbctf/blob/master/LICENSE).
+This source code is licensed under the Creative Commons Attribution-NonCommercial 4.0 International license. View the license [here](https://github.com/rafaelfoster/fbctf/blob/master/LICENSE).
