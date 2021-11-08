@@ -357,7 +357,7 @@ if [[ "$MULTIPLE_SERVERS" == false || "$SERVER_TYPE" = "mysql" ]]; then
     # Configuration for MySQL
     if [[ "$MULTIPLE_SERVERS" == true ]] && [[ "$SERVER_TYPE" = "mysql" ]]; then
         # This is required in order to generate password hash (since HHVM is not being installed)
-        package php7.0-cli
+        package php7.4-cli php7.4-dom
 
         sudo sed -e '/^bind-address/ s/^#*/#/' -i /etc/mysql/mysql.conf.d/mysqld.cnf
         sudo sed -e '/^skip-external-locking/ s/^#*/#/' -i /etc/mysql/mysql.conf.d/mysqld.cnf
