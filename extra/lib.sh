@@ -51,11 +51,6 @@ function package() {
   fi
 }
 
-function install_unison() {
-  cd /
-  dl_pipe "https://www.archlinux.org/packages/extra/x86_64/unison/download/" | sudo tar Jx
-}
-
 function repo_osquery() {
   log "Adding osquery repository keys"
   sudo DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
@@ -286,8 +281,8 @@ function install_composer() {
 }
 
 function install_nodejs() {
-  log "Downloading and setting node.js version 6.x repo information"
-  dl_pipe "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
+  log "Downloading and setting node.js version 8.x repo information"
+  dl_pipe "https://deb.nodesource.com/setup_8.x" | sudo -E bash -
 
   log "Installing node.js"
   package nodejs
