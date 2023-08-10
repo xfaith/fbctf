@@ -296,7 +296,7 @@ fi
             package python-setuptools
             package python-pip
             log "Upgrading pip"
-            sudo -H pip install --upgrade pip "pip < 21.0"
+	    sudo -H pip install --upgrade "pip < 21.0"
             log "Installing pip - mycli"
             sudo -H pip install mycli
             package emacs
