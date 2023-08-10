@@ -225,13 +225,12 @@ function install_hhvm() {
   package software-properties-common
 
   log "Adding HHVM keys"
-  sudo DEBIAN_FRONTEND=noninteractive apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-  sudo DEBIAN_FRONTEND=noninteractive apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-
+  #sudo DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 5a16e7281be7a449
+  #sudo DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B4112585D386EB94
+  curl https://dl2.hhvm.com/conf/hhvm.gpg.key | sudo apt-key add
   log "Adding HHVM repo"
-  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository "deb http://dl.hhvm.com/ubuntu xenial-lts-3.21 main"
-
-  package_repo_update
+  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository "deb http://dl.hhvm.com/ubuntu bionic-lts-3.27 main"
+  sudo apt-get update
   package hhvm
 
   log "Enabling HHVM to start by default"

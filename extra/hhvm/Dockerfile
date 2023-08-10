@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 ENV HOME /root
 
@@ -14,6 +14,6 @@ ENV HHVM_DISABLE_NUMA true
 WORKDIR $HOME
 COPY . $HOME
 
-RUN apt-get update && apt-get -y install sudo apt-utils
+RUN apt-get update && apt-get -y --fix-broken install sudo apt-utils dirmngr
 RUN ./extra/provision.sh -m $MODE -c $TYPE -k $KEY -C $CRT -D $DOMAIN -e $EMAIL -s `pwd` --docker --multiple-servers --server-type hhvm --mysql-server mysql --cache-server cache
 CMD ["./extra/hhvm/hhvm_startup.sh"]
