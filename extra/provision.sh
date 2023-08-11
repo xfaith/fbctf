@@ -299,8 +299,6 @@ fi
 	    sudo -H pip install --upgrade "pip < 21.0"
             log "Installing pip - mycli"
             sudo -H pip install mycli
-            package emacs
-            package htop
         fi
 
         package ca-certificates
@@ -308,7 +306,7 @@ fi
         install_nodejs
 
         log "Installing all required npm node_modules"
-        sudo npm install --prefix "$CTF_PATH"
+        sudo npm install --unsafe-perm --prefix "$CTF_PATH"
         sudo npm install -g grunt
         sudo npm install -g flow-bin
 
