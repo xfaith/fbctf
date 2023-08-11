@@ -42,6 +42,23 @@ function package_repo_update() {
   sudo DEBIAN_FRONTEND=noninteractive apt-get update
 }
 
+function docker_install(){
+  log "Installing Docker"
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl gnupg
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  sudo chmod a+r /etc/apt/keyrings/docker.gpg
+  echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+  sudo apt-get install docker-ce
+}
+
+
+
 function package() {
   if [[ -n "$(dpkg --get-selections | grep -P '^$1\s')" ]]; then
     log "$1 is already installed. skipping."
@@ -280,8 +297,8 @@ function install_composer() {
 }
 
 function install_nodejs() {
-  log "Downloading and setting node.js version 10.x repo information"
-  dl_pipe "https://deb.nodesource.com/setup_10.x" | sudo -E bash -
+  log "Downloading and setting node.js version 16.x repo information"
+  dl_pipe "https://deb.nodesource.com/setup_16.x" | sudo -E bash -
 
   log "Installing node.js"
   package nodejs
@@ -370,7 +387,7 @@ function update_repo() {
   fi
 
   log "Pulling from remote repository"
-  git pull --rebase https://github.com/facebook/fbctf.git
+  git pull --rebase https://github.com/xfaith/fbctf.git
 
   log "Starting sync to $__ctf_path"
   if [[ "$__code_path" != "$__ctf_path" ]]; then
@@ -411,17 +428,19 @@ function quick_setup() {
   elif [[ "$__type" = "install_multi_cache" ]]; then
     ./extra/provision.sh -m $__mode -s $PWD --multiple-servers --server-type cache
   elif [[ "$__type" = "start_docker" ]]; then
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    package_repo_update
-    package docker-ce
+    #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #3sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #package_repo_update
+    #package docker-ce
+    docker_install
     sudo docker build --build-arg MODE=$__mode -t="fbctf-image" .
     sudo docker run -d --name fbctf -p 80:80 -p 443:443 fbctf-image
   elif [[ "$__type" = "start_docker_multi" ]]; then
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    package_repo_update
-    package docker-ce
+    #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #package_repo_update
+    #package docker-ce
+    docker_install
     package python
     curl https://bootstrap.pypa.io/get-pip.py | sudo python3
     sudo pip install docker-compose
