@@ -54,7 +54,7 @@ function docker_install(){
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
-  sudo apt-get install docker-ce
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
 
@@ -441,7 +441,7 @@ function quick_setup() {
     #package_repo_update
     #package docker-ce
     docker_install
-    package python
+    package python3
     curl https://bootstrap.pypa.io/get-pip.py | sudo python3
     sudo pip install docker-compose
     if [[ "$__mode" = "prod" ]]; then
