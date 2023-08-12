@@ -441,7 +441,7 @@ function quick_setup() {
     #package_repo_update
     #package docker-ce
     docker_install
-    package python
+    package python3
     curl https://bootstrap.pypa.io/get-pip.py | sudo python3
     sudo pip install docker-compose
     if [[ "$__mode" = "prod" ]]; then

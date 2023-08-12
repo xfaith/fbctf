@@ -294,7 +294,7 @@ fi
             package libssl-dev
             package python-all-dev
             package python-setuptools
-            package python-pip
+            package python3-pip
             log "Upgrading pip"
 	    sudo -H pip install --upgrade "pip < 21.0"
             log "Installing pip - mycli"
