@@ -42,6 +42,23 @@ function package_repo_update() {
   sudo DEBIAN_FRONTEND=noninteractive apt-get update
 }
 
+function docker_install(){
+  log "Installing Docker"
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl gnupg
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  sudo chmod a+r /etc/apt/keyrings/docker.gpg
+  echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+}
+
+
+
 function package() {
   if [[ -n "$(dpkg --get-selections | grep -P '^$1\s')" ]]; then
     log "$1 is already installed. skipping."
@@ -230,13 +247,12 @@ function install_hhvm() {
   package software-properties-common
 
   log "Adding HHVM keys"
-  sudo DEBIAN_FRONTEND=noninteractive apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e7281be7a449
-  sudo DEBIAN_FRONTEND=noninteractive apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-
+  #sudo DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 5a16e7281be7a449
+  #sudo DEBIAN_FRONTEND=noninteractive apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B4112585D386EB94
+  curl https://dl2.hhvm.com/conf/hhvm.gpg.key | sudo apt-key add
   log "Adding HHVM repo"
-  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository "http://dl.hhvm.com/ubuntu"
-
-  package_repo_update
+  sudo DEBIAN_FRONTEND=noninteractive add-apt-repository "deb http://dl.hhvm.com/ubuntu bionic-lts-3.27 main"
+  sudo apt-get update
   package hhvm
 
   log "Enabling HHVM to start by default"
@@ -286,8 +302,8 @@ function install_composer() {
 }
 
 function install_nodejs() {
-  log "Downloading and setting node.js version 12.x repo information"
-  dl_pipe "https://deb.nodesource.com/setup_12.x" | sudo -E bash -
+  log "Downloading and setting node.js version 16.x repo information"
+  dl_pipe "https://deb.nodesource.com/setup_16.x" | sudo -E bash -
 
   log "Installing node.js"
   package nodejs
@@ -376,7 +392,7 @@ function update_repo() {
   fi
 
   log "Pulling from remote repository"
-  git pull --rebase https://github.com/facebook/fbctf.git
+  git pull --rebase https://github.com/xfaith/fbctf.git
 
   log "Starting sync to $__ctf_path"
   if [[ "$__code_path" != "$__ctf_path" ]]; then
@@ -417,13 +433,21 @@ function quick_setup() {
   elif [[ "$__type" = "install_multi_cache" ]]; then
     ./extra/provision.sh -m $__mode -s $PWD --multiple-servers --server-type cache
   elif [[ "$__type" = "start_docker" ]]; then
-    package_repo_update
-    package docker-ce
+    #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #3sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #package_repo_update
+    #package docker-ce
+    docker_install
     sudo docker build --build-arg MODE=$__mode -t="fbctf-image" .
-    sudo docker run --name fbctf -p 80:80 -p 443:443 fbctf-image
+    sudo docker run -d --name fbctf -p 80:80 -p 443:443 fbctf-image
   elif [[ "$__type" = "start_docker_multi" ]]; then
-    package_repo_update
-    package python-pip
+    #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    #package_repo_update
+    #package docker-ce
+    docker_install
+    package python3
+    curl https://bootstrap.pypa.io/get-pip.py | sudo python3
     sudo pip install docker-compose
     if [[ "$__mode" = "prod" ]]; then
       sed -i -e 's|      #  MODE: prod|        MODE: prod|g' ./docker-compose.yml
@@ -432,7 +456,7 @@ function quick_setup() {
       sed -i -e 's|        MODE: prod|      #  MODE: prod|g' ./docker-compose.yml
       sed -i -e 's|      args|      #args|g' ./docker-compose.yml
     fi
-    sudo docker-compose up
+    sudo docker-compose up -d
   elif [[ "$__type" = "start_vagrant" ]]; then
     cp Vagrantfile-single Vagrantfile
     export FBCTF_PROVISION_ARGS="-m $__mode"
@@ -443,4 +467,3 @@ function quick_setup() {
     vagrant up
   fi
 }
-

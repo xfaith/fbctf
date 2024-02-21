@@ -294,13 +294,11 @@ fi
             package libssl-dev
             package python-all-dev
             package python-setuptools
-            package python-pip
+            package python3-pip
             log "Upgrading pip"
-            sudo -H pip install --upgrade pip
+	    sudo -H pip install --upgrade "pip < 21.0"
             log "Installing pip - mycli"
             sudo -H pip install mycli
-            package emacs
-            package htop
         fi
 
         package ca-certificates
@@ -308,7 +306,7 @@ fi
         install_nodejs
 
         log "Installing all required npm node_modules"
-        sudo npm install --prefix "$CTF_PATH"
+        sudo npm install --unsafe-perm --prefix "$CTF_PATH"
         sudo npm install -g grunt
         sudo npm install -g flow-bin
 
@@ -319,8 +317,7 @@ fi
         install_nginx "$CTF_PATH" "$MODE" "$TYPE" "$EMAIL" "$DOMAIN" "$DOCKER" "$MULTIPLE_SERVERS" "$HHVM_SERVER"
 
         log "Installing unison 2.48.3. Remember to install the same version on your host machine"
-        package xz-utils
-        install_unison
+        package unison
     fi
 
     log "Creating attachments folder, and setting ownership to www-data"
@@ -358,6 +355,7 @@ if [[ "$MULTIPLE_SERVERS" == false || "$SERVER_TYPE" = "mysql" ]]; then
     if [[ "$MULTIPLE_SERVERS" == true ]] && [[ "$SERVER_TYPE" = "mysql" ]]; then
         # This is required in order to generate password hash (since HHVM is not being installed)
         package php7.4-cli php7.4-dom
+
 
         sudo sed -e '/^bind-address/ s/^#*/#/' -i /etc/mysql/mysql.conf.d/mysqld.cnf
         sudo sed -e '/^skip-external-locking/ s/^#*/#/' -i /etc/mysql/mysql.conf.d/mysqld.cnf
